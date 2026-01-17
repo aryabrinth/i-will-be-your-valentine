@@ -120,7 +120,10 @@ body {
   border-radius: 10px;
   text-align: center;
   animation: float 3s ease-in-out infinite;
+  position: relative;
+  z-index: 2;
 }
+
 
 @keyframes float {
   0%,100% { transform: translateY(0); }
@@ -166,7 +169,9 @@ button {
   height: 160px;
   cursor: pointer;
   transition: transform 1s ease, opacity 1s ease;
+  z-index: 1;
 }
+
 
 .envelope.drop {
   transform: translateY(300px);
