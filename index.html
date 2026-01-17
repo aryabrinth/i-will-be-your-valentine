@@ -155,15 +155,13 @@
   const noBtn = document.getElementById('noBtn');
 
   /* OPEN ENVELOPE */
-  document.body.addEventListener('click', () => {
-    if (!envelope.classList.contains('drop')) {
-      envelope.classList.add('drop');
-      setTimeout(() => {
-        envelope.style.display = 'none';
-        letter.style.display = 'block';
-      }, 1000);
-    }
-  }, { once: true });
+  envelope.addEventListener('click', () => {
+    envelope.classList.add('drop');
+    setTimeout(() => {
+      envelope.style.display = 'none';
+      letter.style.display = 'block';
+    }, 900);
+  });
 
   /* FLIP LETTER */
   document.querySelector('#turn-btn button').addEventListener('click', (e) => {
@@ -176,14 +174,11 @@
   noBtn.addEventListener('mouseover', moveNo);
 
   function moveNo() {
-    const maxX = window.innerWidth - noBtn.offsetWidth;
-    const maxY = window.innerHeight - noBtn.offsetHeight;
+    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
 
-    const x = Math.random() * maxX;
-    const y = Math.random() * maxY;
-
-    noBtn.style.left = x + 'px';
-    noBtn.style.top = y + 'px';
+    noBtn.style.left = Math.random() * maxX + 'px';
+    noBtn.style.top = Math.random() * maxY + 'px';
   }
 
   /* CALENDAR INVITE (iPhone) */
