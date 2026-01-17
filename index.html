@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Valentine's Letter 💖</title>
+  <title>Valentine’s Letter 💖</title>
 
   <style>
     * {
@@ -26,18 +26,36 @@
     /* ================= ENVELOPE ================= */
 
     #envelope-container {
-      position: absolute;
+      position: relative;
       width: 90vw;
       max-width: 380px;
-      z-index: 10;
       cursor: pointer;
+      z-index: 10;
     }
 
     #envelope-container img {
-      position: absolute;
       width: 100%;
-      left: 0;
+      display: block;
+    }
+
+    #env-back {
+      position: relative;
+      z-index: 1;
+    }
+
+    #letter-preview {
+      position: absolute;
+      top: 8%;
+      left: 5%;
+      width: 90%;
+      z-index: 2;
+    }
+
+    #env-front {
+      position: absolute;
       top: 0;
+      left: 0;
+      z-index: 3;
     }
 
     .drop {
@@ -74,6 +92,8 @@
     .side {
       position: absolute;
       width: 100%;
+      top: 0;
+      left: 0;
       backface-visibility: hidden;
     }
 
@@ -84,8 +104,8 @@
     /* ================= BUTTONS ================= */
 
     .btn {
-      margin-top: 16px;
-      padding: 14px 22px;
+      margin-top: 14px;
+      padding: 14px 24px;
       border-radius: 30px;
       font-size: 16px;
       border: none;
@@ -107,83 +127,90 @@
     #turn-btn {
       display: flex;
       justify-content: center;
+      margin-top: 12px;
     }
 
     #proposal-buttons {
       position: relative;
-      margin-top: 20px;
+      margin-top: 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 12px;
     }
-
   </style>
 </head>
+
 <body>
 
   <!-- ENVELOPE -->
   <div id="envelope-container">
-    <img src="envelope-back.png" id="env-back" />
-    <img src="envelope-front.png" id="env-front" />
+    <img src="envelope-back.png" id="env-back">
+    <img src="letter-1.png" id="letter-preview">
+    <img src="envelope-front.png" id="env-front">
   </div>
 
   <!-- LETTER -->
   <div id="letter-container">
     <div class="card" id="card">
+
+      <!-- FRONT -->
       <div class="side front">
-        <img src="letter-1.png" style="width:100%" />
+        <img src="letter-1.png" style="width:100%">
         <div id="turn-btn">
           <button class="btn">💌 Click to turn over</button>
         </div>
       </div>
+
+      <!-- BACK -->
       <div class="side back">
-        <img src="letter-2.png" style="width:100%" />
+        <img src="letter-2.png" style="width:100%">
         <div id="proposal-buttons">
           <button class="btn" onclick="addToCalendar()">Yes 🥺</button>
           <button class="btn alt" onclick="addToCalendar()">Absolutely Yes 💖</button>
           <button class="btn no" id="noBtn">No 😏</button>
         </div>
       </div>
+
     </div>
   </div>
 
-<script>
-  const envelope = document.getElementById('envelope-container');
-  const letter = document.getElementById('letter-container');
-  const card = document.getElementById('card');
-  const noBtn = document.getElementById('noBtn');
+  <script>
+    const envelope = document.getElementById('envelope-container');
+    const letter = document.getElementById('letter-container');
+    const card = document.getElementById('card');
+    const noBtn = document.getElementById('noBtn');
 
-  /* OPEN ENVELOPE */
-  envelope.addEventListener('click', () => {
-    envelope.classList.add('drop');
-    setTimeout(() => {
-      envelope.style.display = 'none';
-      letter.style.display = 'block';
-    }, 900);
-  });
+    /* OPEN ENVELOPE */
+    envelope.addEventListener('click', () => {
+      envelope.classList.add('drop');
+      setTimeout(() => {
+        envelope.style.display = 'none';
+        letter.style.display = 'block';
+      }, 900);
+    }, { once: true });
 
-  /* FLIP LETTER */
-  document.querySelector('#turn-btn button').addEventListener('click', (e) => {
-    e.stopPropagation();
-    card.classList.add('flipped');
-  });
+    /* FLIP LETTER */
+    document.querySelector('#turn-btn button').addEventListener('click', (e) => {
+      e.stopPropagation();
+      card.classList.add('flipped');
+    });
 
-  /* NO BUTTON DODGE */
-  noBtn.addEventListener('touchstart', moveNo);
-  noBtn.addEventListener('mouseover', moveNo);
+    /* NO BUTTON DODGE */
+    noBtn.addEventListener('touchstart', moveNo);
+    noBtn.addEventListener('mouseover', moveNo);
 
-  function moveNo() {
-    const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-    const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+    function moveNo() {
+      const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+      const maxY = window.innerHeight - noBtn.offsetHeight - 20;
 
-    noBtn.style.left = Math.random() * maxX + 'px';
-    noBtn.style.top = Math.random() * maxY + 'px';
-  }
+      noBtn.style.left = Math.random() * maxX + 'px';
+      noBtn.style.top = Math.random() * maxY + 'px';
+    }
 
-  /* CALENDAR INVITE (iPhone) */
-  function addToCalendar() {
-    const ics = `BEGIN:VCALENDAR
+    /* CALENDAR INVITE (iPhone) */
+    function addToCalendar() {
+      const ics = `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
 SUMMARY:Valentine’s Date 💖
@@ -192,15 +219,15 @@ DTEND;VALUE=DATE:20260215
 END:VEVENT
 END:VCALENDAR`;
 
-    const blob = new Blob([ics], { type: 'text/calendar' });
-    const link = document.createElement('a');
-    link.href = URL.createObjectURL(blob);
-    link.download = 'valentines-date.ics';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-  }
-</script>
+      const blob = new Blob([ics], { type: 'text/calendar' });
+      const link = document.createElement('a');
+      link.href = URL.createObjectURL(blob);
+      link.download = 'valentines-date.ics';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
+  </script>
 
 </body>
 </html>
