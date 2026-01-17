@@ -1,35 +1,84 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Be My Valentine 💖</title>
+
   <style>
     body {
-     margin: 0;
-     background: #ffe6eb;
-     font-family: Arial, sans-serif;
+      margin: 0;
+      background: #ffe6eb;
+      font-family: Arial, sans-serif;
     }
-    .card {
-      background: white;
-      padding: 30px;
-      border-radius: 20px;
-      display: inline-block;
+
+    .scene {
+      position: relative;
+      width: 90vw;
+      max-width: 360px;
+      margin: 30px auto;
     }
-    button {
-      font-size: 18px;
-      padding: 10px 20px;
-      margin: 10px;
-      border-radius: 20px;
-      border: none;
+
+    .scene img {
+      width: 100%;
+      display: block;
+      border-radius: 18px;
+    }
+
+    /* Envelope */
+    .envelope {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      transition: transform 1s ease, opacity 1s ease;
       cursor: pointer;
     }
-    #yes {
+
+    .envelope-back {
+      z-index: 1;
+    }
+
+    .envelope-front {
+      z-index: 3;
+    }
+
+    .envelope.fall {
+      transform: translateY(600px);
+      opacity: 0;
+    }
+
+    /* Letter */
+    .letter {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    /* Buttons */
+    .buttons {
+      text-align: center;
+      margin-top: 18px;
+    }
+
+    button {
+      padding: 12px 22px;
+      margin: 8px;
+      border-radius: 24px;
+      border: none;
+      font-size: 16px;
       background: #ff4d6d;
       color: white;
+      cursor: pointer;
     }
+
     #no {
       background: #ddd;
-      position: absolute;
+      color: black;
+      position: relative;
     }
   </style>
 </head>
@@ -38,201 +87,54 @@
 
 <div class="scene">
 
-  <!-- PAGE 1 -->
-  <div class="page active" id="page1">
-    <div class="letter">
-      <h2>My Dear Pakhi 🐥</h2>
+  <!-- Envelope -->
+  <img src="envelope-back.png" class="envelope envelope-back">
+  <img src="envelope-front.png" class="envelope envelope-front" onclick="openEnvelope()">
 
-      <p>
-        I wanted to give you this in person, but due to this great distance and our future plans,
-        I am unable to.
-      </p>
-
-      <div class="images">
-        <img src="map.png" alt="Distance map">
-        <img src="hands.png" alt="Holding hands">
-      </div>
-
-      <p>
-        Even though this distance pains my heart, it gives me a great opportunity to nerd out.
-      </p>
-
-      <button onclick="nextPage()">Turn Page 📖</button>
-    </div>
-
-    <div class="envelope" onclick="openEnvelope()">
-      <div class="flap"></div>
-      <div class="back"></div>
-    </div>
-  </div>
-
-  <!-- PAGE 2 -->
-  <div class="page" id="page2">
-    <div class="letter">
-      <h2>My Dearest, My Sweetums, My Samosa Pav 💖</h2>
-
-      <p>
-        Would you accept me as your Valentine and join me for a date on<br>
-        <strong>Saturday, 14th February 2026?</strong>
-      </p>
-
-      <div class="buttons">
-        <button onclick="openCalendar()">Yes 💕</button>
-        <button onclick="openCalendar()">Absolutely Yes 💘</button>
-        <button id="no" onmouseover="moveNo()">No 😤</button>
-      </div>
-    </div>
-  </div>
+  <!-- Letter pages -->
+  <img src="letter-1.png" class="letter" id="page1">
+  <img src="letter-2.png" class="letter hidden" id="page2">
 
 </div>
 
-<style>
-  @media (max-width: 600px) {
-  .letter {
-    animation: none;
-  }
-}
+<div class="buttons hidden" id="page1Buttons">
+  <button onclick="turnPage()">Turn Page 📖</button>
+</div>
 
-body {
-  margin: 0;
-  height: 100vh;
-  background: #ffe6eb;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-family: Arial, sans-serif;
-}
-
-.scene {
-  position: relative;
-  width: 90vw;
-  max-width: 360px;
-  margin: 40px auto 0;
-}
-
-.page {
-  display: none;
-  position: absolute;
-  width: 100%;
-  height: 100%;
-}
-
-.page.active {
-  display: block;
-}
-
-.letter {
-  background: white;
-  padding: 20px;
-  border-radius: 10px;
-  text-align: center;
-  animation: float 3s ease-in-out infinite;
-  position: relative;
-  z-index: 2;
-}
-
-
-@keyframes float {
-  0%,100% { transform: translateY(0); }
-  50% { transform: translateY(-6px); }
-}
-
-.images {
-  display: flex;
-  gap: 10px;
-  margin: 15px 0;
-  justify-content: center;
-}
-
-
-.images img {
-  width: 48%;
-  max-width: 130px;
-  height: 120px;
-  object-fit: cover;
-  border-radius: 8px;
-}
-
-button {
-  margin-top: 15px;
-  padding: 10px 18px;
-  border-radius: 20px;
-  border: none;
-  background: #ff4d6d;
-  color: white;
-  font-size: 16px;
-  cursor: pointer;
-}
-
-.buttons button {
-  margin: 10px;
-}
-
-#no {
-  background: #ddd;
-  color: black;
-  position: absolute;
-}
-
-.envelope {
-  position: absolute;
-  top: -60px;
-  left: 0;
-  width: 100%;
-  height: 140px;
-  cursor: pointer;
-  transition: transform 1s ease, opacity 1s ease;
-  z-index: 1;
-}
-
-
-
-.envelope.drop {
-  transform: translateY(300px);
-  opacity: 0;
-}
-
-.back {
-  background: #ffb6c1;
-  height: 100%;
-  border-radius: 10px;
-}
-
-.flap {
-  position: absolute;
-  top: -40px;
-  width: 100%;
-  height: 80px;
-  background: #ff9aa2;
-  clip-path: polygon(0 100%, 50% 0, 100% 100%);
-}
-</style>
+<div class="buttons hidden" id="page2Buttons">
+  <button onclick="openCalendar()">Yes 💕</button>
+  <button onclick="openCalendar()">Absolutely Yes 💘</button>
+  <button id="no" onmouseover="moveNo()">No 😤</button>
+</div>
 
 <script>
-function openEnvelope() {
-  document.querySelector('.envelope').classList.add('drop');
-}
+  function openEnvelope() {
+    document.querySelectorAll('.envelope').forEach(el =>
+      el.classList.add('fall')
+    );
+    document.getElementById('page1Buttons').classList.remove('hidden');
+  }
 
-function nextPage() {
-  document.getElementById('page1').classList.remove('active');
-  document.getElementById('page2').classList.add('active');
-}
+  function turnPage() {
+    document.getElementById('page1').classList.add('hidden');
+    document.getElementById('page2').classList.remove('hidden');
+    document.getElementById('page1Buttons').classList.add('hidden');
+    document.getElementById('page2Buttons').classList.remove('hidden');
+  }
 
-function moveNo() {
-  const no = document.getElementById("no");
-  no.style.left = Math.random() * 200 + "px";
-  no.style.top = Math.random() * 200 + "px";
-}
+  function moveNo() {
+    const no = document.getElementById('no');
+    no.style.transform =
+      `translate(${Math.random() * 80 - 40}px, ${Math.random() * 40 - 20}px)`;
+  }
 
-/* ✅ iPhone-friendly calendar open */
-function openCalendar() {
-  window.location.href =
-    "https://www.google.com/calendar/render?action=TEMPLATE" +
-    "&text=Valentine’s+Date+with+Arya+💖" +
-    "&dates=20260214T140000Z/20260214T160000Z";
-}
+  function openCalendar() {
+    window.location.href =
+      "https://www.google.com/calendar/render?action=TEMPLATE" +
+      "&text=Valentine’s+Date+with+Arya+💖" +
+      "&dates=20260214T140000Z/20260214T160000Z";
+  }
 </script>
 
 </body>
-
 </html>
