@@ -1,160 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Valentine’s Letter 💖</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Valentine’s Letter 💖</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-    }
+<style>
+* {
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
 
-    body {
-      margin: 0;
-      width: 100vw;
-      height: 100vh;
-      overflow: hidden;
-      background: #fde6ec;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
+body {
+  margin: 0;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+  background: #fde6ec;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
-    /* ================= ENVELOPE ================= */
+/* ================= STAGE ================= */
 
-    #envelope-container {
-      position: relative;
-      width: 90vw;
-      max-width: 380px;
-      cursor: pointer;
-      z-index: 10;
-    }
+#stage {
+  position: relative;
+  width: 90vw;
+  max-width: 380px;
+}
 
-    #envelope-container img {
-      width: 100%;
-      display: block;
-    }
+/* ================= LETTER ================= */
 
-    #env-back {
-      position: relative;
-      z-index: 1;
-    }
+#letter-container {
+  width: 100%;
+  perspective: 1200px;
+}
 
-    #letter-preview {
-      position: absolute;
-      top: 8%;
-      left: 5%;
-      width: 90%;
-      z-index: 2;
-    }
+.card {
+  position: relative;
+  width: 100%;
+  transform-style: preserve-3d;
+  transition: transform 1s;
+}
 
-    #env-front {
-      position: absolute;
-      top: 0;
-      left: 0;
-      z-index: 3;
-    }
+.card.flipped {
+  transform: rotateY(180deg);
+}
 
-    .drop {
-      animation: dropDown 1.2s ease-in forwards;
-    }
+.side {
+  position: absolute;
+  width: 100%;
+  top: 0;
+  left: 0;
+  backface-visibility: hidden;
+}
 
-    @keyframes dropDown {
-      to {
-        transform: translateY(120vh);
-        opacity: 0;
-      }
-    }
+.back {
+  transform: rotateY(180deg);
+}
 
-    /* ================= LETTER ================= */
+/* ================= ENVELOPE ================= */
 
-    #letter-container {
-      width: 90vw;
-      max-width: 380px;
-      perspective: 1200px;
-      display: none;
-    }
+#envelope {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 5;
+  cursor: pointer;
+}
 
-    .card {
-      width: 100%;
-      position: relative;
-      transform-style: preserve-3d;
-      transition: transform 1s;
-    }
+#envelope img {
+  width: 100%;
+  display: block;
+}
 
-    .card.flipped {
-      transform: rotateY(180deg);
-    }
+#env-front {
+  position: absolute;
+  top: 0;
+  left: 0;
+}
 
-    .side {
-      position: absolute;
-      width: 100%;
-      top: 0;
-      left: 0;
-      backface-visibility: hidden;
-    }
+.drop {
+  animation: dropDown 1.2s ease-in forwards;
+}
 
-    .back {
-      transform: rotateY(180deg);
-    }
+@keyframes dropDown {
+  to {
+    transform: translateY(120vh);
+    opacity: 0;
+  }
+}
 
-    /* ================= BUTTONS ================= */
+/* ================= BUTTONS ================= */
 
-    .btn {
-      margin-top: 14px;
-      padding: 14px 24px;
-      border-radius: 30px;
-      font-size: 16px;
-      border: none;
-      cursor: pointer;
-      background: #ff6f91;
-      color: white;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.15);
-    }
+.btn {
+  margin-top: 14px;
+  padding: 14px 24px;
+  border-radius: 30px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+  background: #ff6f91;
+  color: white;
+  box-shadow: 0 8px 18px rgba(0,0,0,0.15);
+}
 
-    .btn.alt {
-      background: #ff4f81;
-    }
+.btn.alt {
+  background: #ff4f81;
+}
 
-    .btn.no {
-      background: #888;
-      position: absolute;
-    }
+.btn.no {
+  background: #888;
+  position: absolute;
+}
 
-    #turn-btn {
-      display: flex;
-      justify-content: center;
-      margin-top: 12px;
-    }
+#turn-btn {
+  display: flex;
+  justify-content: center;
+  margin-top: 12px;
+}
 
-    #proposal-buttons {
-      position: relative;
-      margin-top: 16px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 12px;
-    }
-  </style>
+#proposal-buttons {
+  position: relative;
+  margin-top: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+}
+</style>
 </head>
 
 <body>
 
-  <!-- ENVELOPE -->
-  <div id="envelope-container">
-    <img src="envelope-back.png" id="env-back">
-    <img src="letter-1.png" id="letter-preview">
-    <img src="envelope-front.png" id="env-front">
-  </div>
+<div id="stage">
 
-  <!-- LETTER -->
+  <!-- LETTER (ALWAYS FIXED IN PLACE) -->
   <div id="letter-container">
     <div class="card" id="card">
 
-      <!-- FRONT -->
       <div class="side front">
         <img src="letter-1.png" style="width:100%">
         <div id="turn-btn">
@@ -162,7 +149,6 @@
         </div>
       </div>
 
-      <!-- BACK -->
       <div class="side back">
         <img src="letter-2.png" style="width:100%">
         <div id="proposal-buttons">
@@ -175,42 +161,44 @@
     </div>
   </div>
 
-  <script>
-    const envelope = document.getElementById('envelope-container');
-    const letter = document.getElementById('letter-container');
-    const card = document.getElementById('card');
-    const noBtn = document.getElementById('noBtn');
+  <!-- ENVELOPE (ON TOP OF LETTER) -->
+  <div id="envelope">
+    <img src="envelope-back.png">
+    <img src="envelope-front.png" id="env-front">
+  </div>
 
-    /* OPEN ENVELOPE */
-    envelope.addEventListener('click', () => {
-      envelope.classList.add('drop');
-      setTimeout(() => {
-        envelope.style.display = 'none';
-        letter.style.display = 'block';
-      }, 900);
-    }, { once: true });
+</div>
 
-    /* FLIP LETTER */
-    document.querySelector('#turn-btn button').addEventListener('click', (e) => {
-      e.stopPropagation();
-      card.classList.add('flipped');
-    });
+<script>
+const envelope = document.getElementById('envelope');
+const card = document.getElementById('card');
+const noBtn = document.getElementById('noBtn');
 
-    /* NO BUTTON DODGE */
-    noBtn.addEventListener('touchstart', moveNo);
-    noBtn.addEventListener('mouseover', moveNo);
+/* OPEN ENVELOPE */
+envelope.addEventListener('click', () => {
+  envelope.classList.add('drop');
+}, { once: true });
 
-    function moveNo() {
-      const maxX = window.innerWidth - noBtn.offsetWidth - 20;
-      const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+/* FLIP LETTER */
+document.querySelector('#turn-btn button').addEventListener('click', (e) => {
+  e.stopPropagation();
+  card.classList.add('flipped');
+});
 
-      noBtn.style.left = Math.random() * maxX + 'px';
-      noBtn.style.top = Math.random() * maxY + 'px';
-    }
+/* NO BUTTON DODGE */
+noBtn.addEventListener('touchstart', moveNo);
+noBtn.addEventListener('mouseover', moveNo);
 
-    /* CALENDAR INVITE (iPhone) */
-    function addToCalendar() {
-      const ics = `BEGIN:VCALENDAR
+function moveNo() {
+  const maxX = window.innerWidth - noBtn.offsetWidth - 20;
+  const maxY = window.innerHeight - noBtn.offsetHeight - 20;
+  noBtn.style.left = Math.random() * maxX + 'px';
+  noBtn.style.top = Math.random() * maxY + 'px';
+}
+
+/* CALENDAR INVITE (iPhone) */
+function addToCalendar() {
+  const ics = `BEGIN:VCALENDAR
 VERSION:2.0
 BEGIN:VEVENT
 SUMMARY:Valentine’s Date 💖
@@ -219,15 +207,15 @@ DTEND;VALUE=DATE:20260215
 END:VEVENT
 END:VCALENDAR`;
 
-      const blob = new Blob([ics], { type: 'text/calendar' });
-      const link = document.createElement('a');
-      link.href = URL.createObjectURL(blob);
-      link.download = 'valentines-date.ics';
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-    }
-  </script>
+  const blob = new Blob([ics], { type: 'text/calendar' });
+  const link = document.createElement('a');
+  link.href = URL.createObjectURL(blob);
+  link.download = 'valentines-date.ics';
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+}
+</script>
 
 </body>
 </html>
