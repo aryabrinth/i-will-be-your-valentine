@@ -24,7 +24,7 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* Container that holds envelope + letter */
+    /* Container */
     .scene {
       position: relative;
       width: 90vw;
@@ -44,6 +44,7 @@
     /* Layer order */
     .envelope-back {
       z-index: 1;
+      transition: transform 0.9s ease-in;
     }
 
     .letter {
@@ -52,12 +53,19 @@
 
     .envelope-front {
       z-index: 3;
+      transition: transform 0.9s ease-in;
+    }
+
+    /* 🔽 When opened, envelope falls down */
+    .scene.open .envelope-front,
+    .scene.open .envelope-back {
+      transform: translateY(120vh);
     }
   </style>
 </head>
 
 <body>
-  <div class="scene">
+  <div class="scene" id="scene">
     <img
       src="envelope-back.png"
       alt="Envelope Back"
@@ -76,5 +84,16 @@
       class="envelope-front"
     />
   </div>
+
+  <script>
+    const scene = document.getElementById("scene");
+    let opened = false;
+
+    document.body.addEventListener("click", () => {
+      if (opened) return;
+      opened = true;
+      scene.classList.add("open");
+    });
+  </script>
 </body>
 </html>
