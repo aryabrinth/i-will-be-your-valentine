@@ -112,7 +112,7 @@
       display: none;
     }
 
-    /* Proposal buttons */
+    /* Proposal */
     .proposal {
       position: absolute;
       inset: 0;
@@ -127,12 +127,6 @@
 
     .proposal.show {
       display: flex;
-    }
-
-    .row {
-      display: flex;
-      gap: 16px;
-      position: relative;
     }
 
     .proposal button {
@@ -154,11 +148,13 @@
       padding: 16px 36px;
     }
 
-    /* No button */
+    /* No button – independent layer */
     .no {
+      position: absolute;
       background: #ffd6e0;
       color: #333;
-      position: absolute;
+      left: 60%;
+      bottom: 110px;
     }
   </style>
 </head>
@@ -183,11 +179,9 @@
 
     <!-- Proposal -->
     <div class="proposal" id="proposal">
-      <div class="row">
-        <button class="yes" id="yesBtn">Yes 🥺</button>
-        <button class="no" id="noBtn">No 😏</button>
-      </div>
+      <button class="yes" id="yesBtn">Yes 🥺</button>
       <button class="absolutely" id="absYesBtn">Absolutely Yes 💖</button>
+      <button class="no" id="noBtn">No 😏</button>
     </div>
 
   </div>
@@ -226,11 +220,11 @@
 
     /* No button dodge */
     function moveNoButton() {
-      const bounds = proposal.getBoundingClientRect();
+      const area = proposal.getBoundingClientRect();
       const btn = noBtn.getBoundingClientRect();
 
-      const x = Math.random() * (bounds.width - btn.width);
-      const y = Math.random() * (bounds.height - btn.height - 120);
+      const x = Math.random() * (area.width - btn.width);
+      const y = Math.random() * (area.height - btn.height - 140);
 
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
