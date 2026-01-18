@@ -114,15 +114,15 @@
 
     /* Proposal buttons */
     .proposal {
-      <div class="proposal" id="proposal">
-      <div class="row">
-      <button class="yes">Yes 🥺</button>
-      <div class="no-area">
-      <button class="no" id="noBtn">No 😏</button>
-      </div>
-      </div>
-      <button class="absolutely">Absolutely Yes 💖</button>
-      </div>
+      position: absolute;
+      inset: 0;
+      z-index: 7;
+      display: none;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 40px;
     }
 
     .proposal.show {
@@ -132,6 +132,7 @@
     .row {
       display: flex;
       gap: 16px;
+      position: relative;
     }
 
     .proposal button {
@@ -150,9 +151,10 @@
     .absolutely {
       background: #ff4d6d;
       color: white;
-      width: 100%;
+      padding: 16px 36px;
     }
 
+    /* No button */
     .no {
       background: #ffd6e0;
       color: #333;
@@ -182,10 +184,10 @@
     <!-- Proposal -->
     <div class="proposal" id="proposal">
       <div class="row">
-        <button class="yes">Yes 🥺</button>
+        <button class="yes" id="yesBtn">Yes 🥺</button>
         <button class="no" id="noBtn">No 😏</button>
       </div>
-      <button class="absolutely">Absolutely Yes 💖</button>
+      <button class="absolutely" id="absYesBtn">Absolutely Yes 💖</button>
     </div>
 
   </div>
@@ -222,13 +224,13 @@
       }, 600);
     });
 
-    // No button dodge
+    /* No button dodge */
     function moveNoButton() {
       const bounds = proposal.getBoundingClientRect();
       const btn = noBtn.getBoundingClientRect();
 
       const x = Math.random() * (bounds.width - btn.width);
-      const y = Math.random() * (bounds.height - btn.height);
+      const y = Math.random() * (bounds.height - btn.height - 120);
 
       noBtn.style.left = `${x}px`;
       noBtn.style.top = `${y}px`;
@@ -237,7 +239,7 @@
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", moveNoButton);
 
-    // 📅 Universal calendar invite
+    /* Universal calendar invite */
     function addToCalendar() {
       const ics = `
 BEGIN:VCALENDAR
@@ -262,8 +264,8 @@ END:VCALENDAR
       URL.revokeObjectURL(url);
     }
 
-    document.querySelector(".yes").onclick = addToCalendar;
-    document.querySelector(".absolutely").onclick = addToCalendar;
+    document.getElementById("yesBtn").onclick = addToCalendar;
+    document.getElementById("absYesBtn").onclick = addToCalendar;
   </script>
 </body>
 </html>
