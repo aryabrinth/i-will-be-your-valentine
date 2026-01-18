@@ -159,9 +159,9 @@
       padding: 16px 36px;
     }
 
-    .vanish {
-      opacity: 0;
-      transform: scale(0.6);
+    /* After clicking No */
+    .lol {
+      opacity: 0.6;
       pointer-events: none;
     }
   </style>
@@ -228,18 +228,19 @@
       }, 600);
     });
 
-    /* No button vanishes forever */
+    /* No button → lol */
     noBtn.addEventListener("click", (e) => {
       e.stopPropagation();
-      noBtn.classList.add("vanish");
+      noBtn.textContent = "lol";
+      noBtn.classList.add("lol");
     });
 
-    /* Calendar logic with iPhone popup */
+    /* Calendar logic */
     function addToCalendar() {
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
       if (isIOS) {
-        alert("To save the date 💕\nJust tap Calendar → Add");
+        alert("I saved our date 💕\nJust tap Calendar → Add");
 
         const ics = `
 BEGIN:VCALENDAR
@@ -257,7 +258,7 @@ END:VCALENDAR
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = "Save our date.ics";
+        a.download = "click to save our date.ics";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
