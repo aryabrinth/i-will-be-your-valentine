@@ -49,29 +49,24 @@
       transition: transform 0.9s ease-in;
     }
 
-    /* Envelope drop */
     .scene.open .envelope-front,
     .scene.open .envelope-back {
       transform: translateY(120vh);
     }
 
-    /* 🔧 Letter wrapper is ALWAYS visible */
+    /* Letter */
     .letter-wrapper {
       position: absolute;
       inset: 0;
       z-index: 4;
       perspective: 1200px;
-
-      /* 👀 Teasing animation */
       animation: letterPeek 1.8s ease-in-out infinite;
     }
 
-    /* Stop teasing after open */
     .scene.open .letter-wrapper {
       animation: none;
     }
 
-    /* Flip logic */
     .letter-flip {
       position: relative;
       width: 100%;
@@ -100,7 +95,7 @@
       100% { transform: translateY(0); }
     }
 
-    /* Button */
+    /* Turn button */
     .turn-btn {
       position: absolute;
       bottom: -70px;
@@ -113,12 +108,48 @@
       font-size: 16px;
       border: none;
       cursor: pointer;
-      display: none;
       z-index: 6;
     }
 
-    .scene.open .turn-btn {
-      display: block;
+    /* 💖 Proposal buttons */
+    .proposal {
+      position: absolute;
+      inset: 0;
+      z-index: 7;
+      display: none;
+      flex-direction: column;
+      justify-content: flex-end;
+      align-items: center;
+      gap: 14px;
+      padding-bottom: 40px;
+    }
+
+    .proposal.show {
+      display: flex;
+    }
+
+    .proposal button {
+      padding: 14px 26px;
+      border-radius: 999px;
+      border: none;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .yes {
+      background: #ff6f91;
+      color: white;
+    }
+
+    .absolutely {
+      background: #ff4d6d;
+      color: white;
+    }
+
+    .no {
+      background: #ffd6e0;
+      color: #333;
+      position: absolute;
     }
   </style>
 </head>
@@ -126,7 +157,7 @@
 <body>
   <div class="scene" id="scene">
 
-    <!-- Letter (behind envelope, teasing) -->
+    <!-- Letter -->
     <div class="letter-wrapper" id="letterWrapper">
       <div class="letter-flip">
         <img src="letter-1.png" class="letter-face" />
@@ -138,14 +169,24 @@
     <img src="envelope-back.png" class="envelope-back" />
     <img src="envelope-front.png" class="envelope-front" />
 
-    <!-- Button -->
+    <!-- Turn button -->
     <button class="turn-btn" id="turnBtn">💌 Click to turn over</button>
+
+    <!-- Proposal buttons -->
+    <div class="proposal" id="proposal">
+      <button class="yes">Yes 🥺</button>
+      <button class="absolutely">Absolutely Yes 💖</button>
+      <button class="no" id="noBtn">No 😏</button>
+    </div>
+
   </div>
 
   <script>
     const scene = document.getElementById("scene");
     const turnBtn = document.getElementById("turnBtn");
     const letterWrapper = document.getElementById("letterWrapper");
+    const proposal = document.getElementById("proposal");
+    const noBtn = document.getElementById("noBtn");
 
     let opened = false;
     let flipped = false;
@@ -161,8 +202,34 @@
       if (flipped) return;
       flipped = true;
       letterWrapper.classList.add("flipped");
-      turnBtn.style.display = "none";
+      turnBtn.remove();
+
+      setTimeout(() => {
+        proposal.classList.add("show");
+      }, 600);
     });
+
+    // 😈 No button dodge logic
+    function moveNoButton() {
+      const bounds = proposal.getBoundingClientRect();
+      const btn = noBtn.getBoundingClientRect();
+
+      const x = Math.random() * (bounds.width - btn.width);
+      const y = Math.random() * (bounds.height - btn.height);
+
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    noBtn.addEventListener("mouseenter", moveNoButton);
+    noBtn.addEventListener("touchstart", moveNoButton);
+
+    document.querySelector(".yes").onclick = () =>
+      console.log("YES clicked");
+
+    document.querySelector(".absolutely").onclick = () =>
+      console.log("ABSOLUTELY YES clicked");
   </script>
 </body>
 </html>
+
