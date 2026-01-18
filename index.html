@@ -40,12 +40,12 @@
 
     /* Envelope */
     .envelope-back {
-      z-index: 1;
+      z-index: 3;
       transition: transform 0.9s ease-in;
     }
 
     .envelope-front {
-      z-index: 3;
+      z-index: 5;
       transition: transform 0.9s ease-in;
     }
 
@@ -55,19 +55,23 @@
       transform: translateY(120vh);
     }
 
-    /* Letter flip container */
+    /* 🔧 Letter wrapper is ALWAYS visible */
     .letter-wrapper {
       position: absolute;
       inset: 0;
-      z-index: 2;
+      z-index: 4;
       perspective: 1200px;
-      display: none;
+
+      /* 👀 Teasing animation */
+      animation: letterPeek 1.8s ease-in-out infinite;
     }
 
+    /* Stop teasing after open */
     .scene.open .letter-wrapper {
-      display: block;
+      animation: none;
     }
 
+    /* Flip logic */
     .letter-flip {
       position: relative;
       width: 100%;
@@ -90,22 +94,13 @@
       transform: rotateY(180deg);
     }
 
-    /* Teasing animation (only before open) */
-    .letter-wrapper:not(.opened) {
-      animation: letterPeek 1.8s ease-in-out infinite;
-    }
-
-    .scene.open .letter-wrapper {
-      animation: none;
-    }
-
     @keyframes letterPeek {
       0% { transform: translateY(0); }
       50% { transform: translateY(-12px); }
       100% { transform: translateY(0); }
     }
 
-    /* Turn over button */
+    /* Button */
     .turn-btn {
       position: absolute;
       bottom: -70px;
@@ -119,6 +114,7 @@
       border: none;
       cursor: pointer;
       display: none;
+      z-index: 6;
     }
 
     .scene.open .turn-btn {
@@ -130,17 +126,17 @@
 <body>
   <div class="scene" id="scene">
 
-    <!-- Envelope -->
-    <img src="envelope-back.png" class="envelope-back" />
-    <img src="envelope-front.png" class="envelope-front" />
-
-    <!-- Letter -->
+    <!-- Letter (behind envelope, teasing) -->
     <div class="letter-wrapper" id="letterWrapper">
       <div class="letter-flip">
         <img src="letter-1.png" class="letter-face" />
         <img src="letter-2.png" class="letter-face letter-back" />
       </div>
     </div>
+
+    <!-- Envelope -->
+    <img src="envelope-back.png" class="envelope-back" />
+    <img src="envelope-front.png" class="envelope-front" />
 
     <!-- Button -->
     <button class="turn-btn" id="turnBtn">💌 Click to turn over</button>
@@ -158,7 +154,6 @@
       if (opened) return;
       opened = true;
       scene.classList.add("open");
-      letterWrapper.classList.add("opened");
     });
 
     turnBtn.addEventListener("click", (e) => {
