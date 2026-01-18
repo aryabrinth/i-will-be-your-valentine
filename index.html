@@ -129,6 +129,14 @@
       display: flex;
     }
 
+    .row {
+      position: relative;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      transform: translateX(-18px); /* 👈 moves Yes slightly left */
+    }
+
     .proposal button {
       border-radius: 999px;
       border: none;
@@ -148,9 +156,8 @@
       padding: 16px 36px;
     }
 
-    /* No button – fixed size, transform-only movement */
+    /* No button */
     .no {
-      position: absolute;
       background: #ffd6e0;
       color: #333;
       width: 120px;
@@ -159,7 +166,6 @@
       align-items: center;
       justify-content: center;
       will-change: transform;
-      transform: translate(40px, -110px);
     }
   </style>
 </head>
@@ -184,9 +190,11 @@
 
     <!-- Proposal -->
     <div class="proposal" id="proposal">
-      <button class="yes" id="yesBtn">Yes 🥺</button>
+      <div class="row">
+        <button class="yes" id="yesBtn">Yes 🥺</button>
+        <button class="no" id="noBtn">No 😏</button>
+      </div>
       <button class="absolutely" id="absYesBtn">Absolutely Yes 💖</button>
-      <button class="no" id="noBtn">No 😏</button>
     </div>
 
   </div>
@@ -223,7 +231,7 @@
       }, 600);
     });
 
-    /* No button dodge – transform only */
+    /* No button dodge */
     function moveNoButton() {
       const area = proposal.getBoundingClientRect();
       const x = Math.random() * (area.width - 140);
