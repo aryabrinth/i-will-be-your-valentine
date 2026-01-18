@@ -68,7 +68,6 @@
     }
 
     .letter-flip {
-      position: relative;
       width: 100%;
       height: 100%;
       transform-style: preserve-3d;
@@ -129,12 +128,6 @@
       display: flex;
     }
 
-    .row {
-      position: relative;
-      display: flex;
-      gap: 14px;
-    }
-
     .proposal button {
       border-radius: 999px;
       border: none;
@@ -168,6 +161,9 @@
       align-items: center;
       justify-content: center;
 
+      left: 0;
+      top: 0;
+
       will-change: transform;
       touch-action: manipulation;
     }
@@ -194,9 +190,7 @@
 
     <!-- Proposal -->
     <div class="proposal" id="proposal">
-      <div class="row">
-        <button class="yes" id="yesBtn">Yes 🥺</button>
-      </div>
+      <button class="yes" id="yesBtn">Yes 🥺</button>
       <button class="absolutely" id="absYesBtn">Absolutely Yes 💖</button>
       <button class="no" id="noBtn">No 😏</button>
     </div>
@@ -233,34 +227,30 @@
 
       setTimeout(() => {
         proposal.classList.add("show");
-        placeNoNextToYes();   // ⭐ important
+        placeNoNextToYes();
       }, 600);
     });
 
-    /* Place No exactly beside Yes initially */
+    /* Place No inline with Yes */
     function placeNoNextToYes() {
       const yesRect = yesBtn.getBoundingClientRect();
-      const proposalRect = proposal.getBoundingClientRect();
+      const propRect = proposal.getBoundingClientRect();
 
-      const x = yesRect.right - proposalRect.left + 12;
-      const y = yesRect.top - proposalRect.top;
-
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+      noBtn.style.left = `${yesRect.right - propRect.left + 12}px`;
+      noBtn.style.top = `${yesRect.top - propRect.top}px`;
+      noBtn.style.transform = "translate(0, 0)";
     }
 
-    /* No button dodge */
+    /* Dodge behavior */
     function moveNoButton() {
       const area = proposal.getBoundingClientRect();
       const btn = noBtn.getBoundingClientRect();
 
-      const minX = 10;
       const maxX = area.width - btn.width - 10;
-
-      const minY = 60;
       const maxY = area.height - btn.height - 140;
 
-      const x = Math.random() * (maxX - minX) + minX;
-      const y = Math.random() * (maxY - minY) + minY;
+      const x = Math.random() * maxX;
+      const y = Math.random() * maxY;
 
       noBtn.style.transform = `translate(${x}px, ${y}px)`;
     }
@@ -298,4 +288,3 @@ END:VCALENDAR
   </script>
 </body>
 </html>
-
