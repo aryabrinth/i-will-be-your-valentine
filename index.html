@@ -33,24 +33,15 @@
 
     .scene img {
       position: absolute;
-      top: 0;
-      left: 0;
       width: 100%;
       height: 100%;
       object-fit: contain;
     }
 
-    /* Layer order */
+    /* Envelope */
     .envelope-back {
       z-index: 1;
       transition: transform 0.9s ease-in;
-    }
-
-    .letter {
-      z-index: 2;
-
-      /* 👀 Teasing animation */
-      animation: letterPeek 1.8s ease-in-out infinite;
     }
 
     .envelope-front {
@@ -58,55 +49,124 @@
       transition: transform 0.9s ease-in;
     }
 
-    /* 🔽 Envelope falls away */
+    /* Envelope drop */
     .scene.open .envelope-front,
     .scene.open .envelope-back {
       transform: translateY(120vh);
     }
 
-    /* 🛑 Stop teasing once opened */
-    .scene.open .letter {
+    /* Letter flip container */
+    .letter-wrapper {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      perspective: 1200px;
+      display: none;
+    }
+
+    .scene.open .letter-wrapper {
+      display: block;
+    }
+
+    .letter-flip {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.8s ease-in-out;
+    }
+
+    .letter-wrapper.flipped .letter-flip {
+      transform: rotateY(180deg);
+    }
+
+    .letter-face {
+      position: absolute;
+      inset: 0;
+      backface-visibility: hidden;
+    }
+
+    .letter-back {
+      transform: rotateY(180deg);
+    }
+
+    /* Teasing animation (only before open) */
+    .letter-wrapper:not(.opened) {
+      animation: letterPeek 1.8s ease-in-out infinite;
+    }
+
+    .scene.open .letter-wrapper {
       animation: none;
     }
 
-    /* ✨ Letter peek keyframes */
     @keyframes letterPeek {
-      0%   { transform: translateY(0); }
-      50%  { transform: translateY(-12px); }
+      0% { transform: translateY(0); }
+      50% { transform: translateY(-12px); }
       100% { transform: translateY(0); }
+    }
+
+    /* Turn over button */
+    .turn-btn {
+      position: absolute;
+      bottom: -70px;
+      left: 50%;
+      transform: translateX(-50%);
+      padding: 14px 24px;
+      border-radius: 999px;
+      background: #ff8fab;
+      color: white;
+      font-size: 16px;
+      border: none;
+      cursor: pointer;
+      display: none;
+    }
+
+    .scene.open .turn-btn {
+      display: block;
     }
   </style>
 </head>
 
 <body>
   <div class="scene" id="scene">
-    <img
-      src="envelope-back.png"
-      alt="Envelope Back"
-      class="envelope-back"
-    />
 
-    <img
-      src="letter-1.png"
-      alt="Letter Page 1"
-      class="letter"
-    />
+    <!-- Envelope -->
+    <img src="envelope-back.png" class="envelope-back" />
+    <img src="envelope-front.png" class="envelope-front" />
 
-    <img
-      src="envelope-front.png"
-      alt="Envelope Front"
-      class="envelope-front"
-    />
+    <!-- Letter -->
+    <div class="letter-wrapper" id="letterWrapper">
+      <div class="letter-flip">
+        <img src="letter-1.png" class="letter-face" />
+        <img src="letter-2.png" class="letter-face letter-back" />
+      </div>
+    </div>
+
+    <!-- Button -->
+    <button class="turn-btn" id="turnBtn">💌 Click to turn over</button>
   </div>
 
   <script>
     const scene = document.getElementById("scene");
+    const turnBtn = document.getElementById("turnBtn");
+    const letterWrapper = document.getElementById("letterWrapper");
+
     let opened = false;
+    let flipped = false;
 
     document.body.addEventListener("click", () => {
       if (opened) return;
       opened = true;
       scene.classList.add("open");
+      letterWrapper.classList.add("opened");
+    });
+
+    turnBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      if (flipped) return;
+      flipped = true;
+      letterWrapper.classList.add("flipped");
+      turnBtn.style.display = "none";
     });
   </script>
 </body>
