@@ -236,10 +236,10 @@
 
     /* Calendar logic with iPhone popup */
     function addToCalendar() {
-      const isIOS = true;/*/iPhone|iPad|iPod/i.test(navigator.userAgent);*/
+      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
       if (isIOS) {
-        alert("I saved our date 💕\nJust tap Calendar → Add");
+        alert("To save the date 💕\nJust tap Calendar → Add");
 
         const ics = `
 BEGIN:VCALENDAR
@@ -257,7 +257,7 @@ END:VCALENDAR
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = "Save our date .ics";
+        a.download = "Save our date.ics";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
