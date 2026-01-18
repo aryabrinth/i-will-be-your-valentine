@@ -109,9 +109,10 @@
       border: none;
       cursor: pointer;
       z-index: 6;
+      display: none;
     }
 
-    /* 💖 Proposal buttons */
+    /* Proposal buttons */
     .proposal {
       position: absolute;
       inset: 0;
@@ -126,6 +127,11 @@
 
     .proposal.show {
       display: flex;
+    }
+
+    .row {
+      display: flex;
+      gap: 16px;
     }
 
     .proposal button {
@@ -144,6 +150,7 @@
     .absolutely {
       background: #ff4d6d;
       color: white;
+      width: 100%;
     }
 
     .no {
@@ -172,11 +179,13 @@
     <!-- Turn button -->
     <button class="turn-btn" id="turnBtn">💌 Click to turn over</button>
 
-    <!-- Proposal buttons -->
+    <!-- Proposal -->
     <div class="proposal" id="proposal">
-      <button class="yes">Yes 🥺</button>
+      <div class="row">
+        <button class="yes">Yes 🥺</button>
+        <button class="no" id="noBtn">No 😏</button>
+      </div>
       <button class="absolutely">Absolutely Yes 💖</button>
-      <button class="no" id="noBtn">No 😏</button>
     </div>
 
   </div>
@@ -195,6 +204,10 @@
       if (opened) return;
       opened = true;
       scene.classList.add("open");
+
+      setTimeout(() => {
+        turnBtn.style.display = "block";
+      }, 900);
     });
 
     turnBtn.addEventListener("click", (e) => {
@@ -209,7 +222,7 @@
       }, 600);
     });
 
-    // 😈 No button dodge logic
+    // No button dodge
     function moveNoButton() {
       const bounds = proposal.getBoundingClientRect();
       const btn = noBtn.getBoundingClientRect();
@@ -224,11 +237,33 @@
     noBtn.addEventListener("mouseenter", moveNoButton);
     noBtn.addEventListener("touchstart", moveNoButton);
 
-    document.querySelector(".yes").onclick = () =>
-      console.log("YES clicked");
+    // 📅 Universal calendar invite
+    function addToCalendar() {
+      const ics = `
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:Valentine’s Date 💖
+DTSTART;VALUE=DATE:20260214
+DTEND;VALUE=DATE:20260215
+END:VEVENT
+END:VCALENDAR
+      `.trim();
 
-    document.querySelector(".absolutely").onclick = () =>
-      console.log("ABSOLUTELY YES clicked");
+      const blob = new Blob([ics], { type: "text/calendar" });
+      const url = URL.createObjectURL(blob);
+
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "valentines-date.ics";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    document.querySelector(".yes").onclick = addToCalendar;
+    document.querySelector(".absolutely").onclick = addToCalendar;
   </script>
 </body>
 </html>
