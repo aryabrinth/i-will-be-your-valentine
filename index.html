@@ -24,7 +24,6 @@
       font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
     }
 
-    /* Container */
     .scene {
       position: relative;
       width: 90vw;
@@ -49,6 +48,9 @@
 
     .letter {
       z-index: 2;
+
+      /* 👀 Teasing animation */
+      animation: letterPeek 1.8s ease-in-out infinite;
     }
 
     .envelope-front {
@@ -56,10 +58,22 @@
       transition: transform 0.9s ease-in;
     }
 
-    /* 🔽 When opened, envelope falls down */
+    /* 🔽 Envelope falls away */
     .scene.open .envelope-front,
     .scene.open .envelope-back {
       transform: translateY(120vh);
+    }
+
+    /* 🛑 Stop teasing once opened */
+    .scene.open .letter {
+      animation: none;
+    }
+
+    /* ✨ Letter peek keyframes */
+    @keyframes letterPeek {
+      0%   { transform: translateY(0); }
+      50%  { transform: translateY(-12px); }
+      100% { transform: translateY(0); }
     }
   </style>
 </head>
