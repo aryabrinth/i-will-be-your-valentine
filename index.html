@@ -130,6 +130,7 @@
     }
 
     .row {
+      position: relative;
       display: flex;
       gap: 14px;
     }
@@ -154,7 +155,7 @@
       padding: 16px 36px;
     }
 
-    /* No button – FINAL FIX */
+    /* No button */
     .no {
       position: absolute;
       background: #ffd6e0;
@@ -162,16 +163,10 @@
 
       width: 120px;
       height: 46px;
-      min-width: 120px;
-      max-width: 120px;
 
       display: flex;
       align-items: center;
       justify-content: center;
-
-      left: 50%;
-      bottom: 110px;
-      transform: translateX(40px);
 
       will-change: transform;
       touch-action: manipulation;
@@ -214,6 +209,7 @@
     const letterWrapper = document.getElementById("letterWrapper");
     const proposal = document.getElementById("proposal");
     const noBtn = document.getElementById("noBtn");
+    const yesBtn = document.getElementById("yesBtn");
 
     let opened = false;
     let flipped = false;
@@ -237,19 +233,31 @@
 
       setTimeout(() => {
         proposal.classList.add("show");
+        placeNoNextToYes();   // ⭐ important
       }, 600);
     });
 
-    /* No button dodge – CENTERED & CLAMPED */
+    /* Place No exactly beside Yes initially */
+    function placeNoNextToYes() {
+      const yesRect = yesBtn.getBoundingClientRect();
+      const proposalRect = proposal.getBoundingClientRect();
+
+      const x = yesRect.right - proposalRect.left + 12;
+      const y = yesRect.top - proposalRect.top;
+
+      noBtn.style.transform = `translate(${x}px, ${y}px)`;
+    }
+
+    /* No button dodge */
     function moveNoButton() {
       const area = proposal.getBoundingClientRect();
       const btn = noBtn.getBoundingClientRect();
 
-      const maxX = area.width / 2 - btn.width - 10;
-      const minX = -area.width / 2 + 10;
+      const minX = 10;
+      const maxX = area.width - btn.width - 10;
 
-      const maxY = -60;
-      const minY = -area.height + 180;
+      const minY = 60;
+      const maxY = area.height - btn.height - 140;
 
       const x = Math.random() * (maxX - minX) + minX;
       const y = Math.random() * (maxY - minY) + minY;
@@ -285,8 +293,9 @@ END:VCALENDAR
       URL.revokeObjectURL(url);
     }
 
-    document.getElementById("yesBtn").onclick = addToCalendar;
+    yesBtn.onclick = addToCalendar;
     document.getElementById("absYesBtn").onclick = addToCalendar;
   </script>
 </body>
 </html>
+
