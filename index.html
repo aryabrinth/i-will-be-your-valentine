@@ -128,6 +128,12 @@
       display: flex;
     }
 
+    .yn-row {
+      display: flex;
+      gap: 14px;
+      transform: translateX(-16px); /* subtle visual centering */
+    }
+
     .proposal button {
       border-radius: 999px;
       border: none;
@@ -135,11 +141,17 @@
       cursor: pointer;
       padding: 14px 26px;
       white-space: nowrap;
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
 
     .yes {
       background: #ff6f91;
       color: white;
+    }
+
+    .no {
+      background: #ffd6e0;
+      color: #333;
     }
 
     .absolutely {
@@ -148,24 +160,11 @@
       padding: 16px 36px;
     }
 
-    /* No button */
-    .no {
-      position: absolute;
-      background: #ffd6e0;
-      color: #333;
-
-      width: 120px;
-      height: 46px;
-
-      display: flex;
-      align-items: center;
-      justify-content: center;
-
-      left: 0;
-      top: 0;
-
-      will-change: transform;
-      touch-action: manipulation;
+    /* Vanish animation */
+    .vanish {
+      opacity: 0;
+      transform: scale(0.6);
+      pointer-events: none;
     }
   </style>
 </head>
@@ -190,9 +189,11 @@
 
     <!-- Proposal -->
     <div class="proposal" id="proposal">
-      <button class="yes" id="yesBtn">Yes 🥺</button>
+      <div class="yn-row">
+        <button class="yes" id="yesBtn">Yes 🥺</button>
+        <button class="no" id="noBtn">No 😏</button>
+      </div>
       <button class="absolutely" id="absYesBtn">Absolutely Yes 💖</button>
-      <button class="no" id="noBtn">No 😏</button>
     </div>
 
   </div>
@@ -203,7 +204,6 @@
     const letterWrapper = document.getElementById("letterWrapper");
     const proposal = document.getElementById("proposal");
     const noBtn = document.getElementById("noBtn");
-    const yesBtn = document.getElementById("yesBtn");
 
     let opened = false;
     let flipped = false;
@@ -227,36 +227,14 @@
 
       setTimeout(() => {
         proposal.classList.add("show");
-        placeNoNextToYes();
       }, 600);
     });
 
-    /* Place No inline with Yes */
-    function placeNoNextToYes() {
-      const yesRect = yesBtn.getBoundingClientRect();
-      const propRect = proposal.getBoundingClientRect();
-
-      noBtn.style.left = `${yesRect.right - propRect.left + 12}px`;
-      noBtn.style.top = `${yesRect.top - propRect.top}px`;
-      noBtn.style.transform = "translate(0, 0)";
-    }
-
-    /* Dodge behavior */
-    function moveNoButton() {
-      const area = proposal.getBoundingClientRect();
-      const btn = noBtn.getBoundingClientRect();
-
-      const maxX = area.width - btn.width - 10;
-      const maxY = area.height - btn.height - 140;
-
-      const x = Math.random() * maxX;
-      const y = Math.random() * maxY;
-
-      noBtn.style.transform = `translate(${x}px, ${y}px)`;
-    }
-
-    noBtn.addEventListener("mouseenter", moveNoButton);
-    noBtn.addEventListener("touchstart", moveNoButton);
+    /* No button vanishes forever */
+    noBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      noBtn.classList.add("vanish");
+    });
 
     /* Calendar invite */
     function addToCalendar() {
@@ -283,7 +261,7 @@ END:VCALENDAR
       URL.revokeObjectURL(url);
     }
 
-    yesBtn.onclick = addToCalendar;
+    document.getElementById("yesBtn").onclick = addToCalendar;
     document.getElementById("absYesBtn").onclick = addToCalendar;
   </script>
 </body>
