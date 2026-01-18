@@ -234,12 +234,13 @@
       noBtn.classList.add("vanish");
     });
 
-    /* Calendar handling */
+    /* Calendar logic with iPhone popup */
     function addToCalendar() {
-      const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
+      const isIOS = true;/*/iPhone|iPad|iPod/i.test(navigator.userAgent);*/
 
       if (isIOS) {
-        // iPhone: download .ics with custom filename
+        alert("I saved our date 💕\nJust tap Calendar → Add");
+
         const ics = `
 BEGIN:VCALENDAR
 VERSION:2.0
@@ -256,13 +257,12 @@ END:VCALENDAR
 
         const a = document.createElement("a");
         a.href = url;
-        a.download = "click to save our date.ics";
+        a.download = "Save our date .ics";
         document.body.appendChild(a);
         a.click();
         document.body.removeChild(a);
         URL.revokeObjectURL(url);
       } else {
-        // Android + Desktop
         window.open(
           "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Valentine’s+Date+💖&dates=20260214/20260215",
           "_blank"
@@ -275,4 +275,3 @@ END:VCALENDAR
   </script>
 </body>
 </html>
-
