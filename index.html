@@ -159,7 +159,6 @@
       padding: 16px 36px;
     }
 
-    /* Vanish animation */
     .vanish {
       opacity: 0;
       transform: scale(0.6);
@@ -235,15 +234,35 @@
       noBtn.classList.add("vanish");
     });
 
-    /* Open calendar app (no file download) */
+    /* Calendar handling */
     function addToCalendar() {
       const isIOS = /iPhone|iPad|iPod/i.test(navigator.userAgent);
 
       if (isIOS) {
-        // Apple Calendar app – opens Add Event screen at date
-        window.location.href = "calshow://20260214";
+        // iPhone: download .ics with custom filename
+        const ics = `
+BEGIN:VCALENDAR
+VERSION:2.0
+BEGIN:VEVENT
+SUMMARY:Valentine’s Date 💖
+DTSTART;VALUE=DATE:20260214
+DTEND;VALUE=DATE:20260215
+END:VEVENT
+END:VCALENDAR
+        `.trim();
+
+        const blob = new Blob([ics], { type: "text/calendar" });
+        const url = URL.createObjectURL(blob);
+
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = "Save our date .ics";
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
       } else {
-        // Android + Desktop – Google Calendar add-event screen
+        // Android + Desktop
         window.open(
           "https://calendar.google.com/calendar/render?action=TEMPLATE&text=Valentine’s+Date+💖&dates=20260214/20260215",
           "_blank"
@@ -256,3 +275,4 @@
   </script>
 </body>
 </html>
+
